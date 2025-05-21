@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Project Labs - Code. Create. Capitalize.</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #ffffee;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #ffffee 0%, #ffffdf 100%);
+        }
+
+        .project-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            height: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border-color: #1B4900;
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 2rem;
+            padding: 8px;
+        }
+
+        .category-btn {
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .category-btn::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .category-btn:hover::after {
+            opacity: 1;
+        }
+
+        .category-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-btn.active {
+            background-color: #1B4900;
+            color: white;
+            box-shadow: 0 4px 12px rgba(27, 73, 0, 0.2);
+        }
+
+        .category-btn:not(.active) {
+            background-color: #fffeec;
+            color: #4b5563;
+        }
+
+        .category-btn:not(.active):hover {
+            background-color: #e5e7eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .category-tabs {
+                flex-wrap: wrap;
+                gap: 8px;
+                display: none;
+            }
+
+            .category-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+        }
+
+        .price-tag {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #1B4900;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            transform: rotate(15deg);
+        }
+
+        .tech-badge {
+            background: #e0ffce;
+            color: #1B4900;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin: 2px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #1B4900, 0 0 15px #1B4900;
+            }
+
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px #1B4900, 0 0 30px #1B4900;
+            }
+        }
+
+        .scroll-spotlight::after {
+            content: '⬇ Scroll to Explore ⬇';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: #1B4900;
+            font-weight: 600;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(-50%);
+            }
+
+            50% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.hidden {
+            transform: translateX(-100%);
+        }
+
+        /* Improved scrolling for mobile */
+        .snap-container {
+            scroll-snap-type: y mandatory;
+        }
+
+        .snap-section {
+            scroll-snap-align: start;
+        }
+    </style>
+</head>
+
+<body style="background-color: #ffffee;">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50" style="background-color: #fffeec; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-3">
+                <div class="flex items-center">
+                    <img src="Logo.png" alt="The Project Labs Logo" class="h-12 floating">
+                    <!-- <span class="ml-2 text-xl md:text-2xl font-bold floating" style="color: #1B4900;">The Project Labs</span> -->
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="focus:outline-none" style="color: #1B4900;">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+                <!-- Desktop menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="transition-all duration-300" style="margin-top: 7px; color: #1B4900;">Home</a>
+                    <a href="#projects" class="transition-all duration-300" style="margin-top: 7px; color: #1B4900;">Projects</a>
+                    <a href="#contact" class="text-white px-6 py-2 rounded-full transition-all duration-300" 
+                       style="background-color: #1B4900;">Get Started</a>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu container -->
+        <div id="mobile-menu" class="mobile-menu hidden w-full" style="background-color: #fffeec;">
+            <div class="flex flex-col space-y-3 p-4">
+                <a href="#home" class="py-2" style="color: #1B4900;">Home</a>
+                <a href="#projects" class="py-2" style="color: #1B4900;">Projects</a>
+                <a href="#contact" class="text-white px-6 py-2 rounded-full text-center" 
+                   style="background-color: #1B4900;">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home"
+        class="pt-24 pb-12 relative scroll-spotlight min-h-screen flex items-center snap-section gradient-bg ">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2" data-aos="fade-right">
+                    <h1 class="text-6xl font-bold mb-6 leading-tight" style="color: #1B4900;">Turn Your Ideas Into <span
+                            style="color: #3a9107;">Reality</span></h1>
+                    <p class="text-xl mb-8" style="color: #1B4900;">🚀 Elevate your academic journey with our cutting-edge
+                        projects in AI/ML, Web Development, and more! Perfect for final year projects, research work,
+                        and hackathons.</p>
+                    <div class="flex flex-wrap gap-4 mb-8">
+                        <div class="flex items-center px-4 py-2 rounded-lg shadow-sm" style="background-color: #fffff0;">
+                            <i class="fas fa-check-circle mr-2" style="color: #1B4900;"></i>
+                            <span>24/7 Support</span>
+                        </div>
+                        <div class="flex items-center px-4 py-2 rounded-lg shadow-sm" style="background-color: #fffff0;">
+                            <i class="fas fa-bolt mr-2" style="color: #1B4900;"></i>
+                            <span>Quick Setup</span>
+                        </div>
+                        <div class="flex items-center px-4 py-2 rounded-lg shadow-sm" style="background-color: #fffff0;">
+                            <i class="fas fa-code mr-2" style="color: #1B4900;"></i>
+                            <span>Source Code</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#projects"
+                            class="text-white px-8 py-3 rounded-full transition duration-300 transform hover:scale-105 text-center" style="background-color: #1B4900;">
+                            Explore Projects
+                        </a>
+                        <a href="#contact"
+                            class="px-8 py-3 rounded-full transition duration-300 transform hover:scale-105 text-center" 
+                            style="border: 2px solid #1B4900; color: #1B4900;">
+                            Contact Us
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 mt-8 md:mt-0" data-aos="fade-left">
+                    <img src="sideImg.png" alt="Project Labs Banner" class="floating max-w-full">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-16 snap-section" style="background-color: #ffffee;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up" style="color: #1B4900;">Our
+                Premium Projects</h2>
+            <p class="text-center mb-12 max-w-2xl mx-auto" data-aos="fade-up" style="color: #1B4900;">Choose from our extensive
+                collection of industry-standard projects. Each project comes with complete documentation, setup guides,
+                and dedicated support.</p>
+
+            <!-- Project Category Tabs for Mobile -->
+            <div class="mb-8 md:hidden">
+                <select id="category-select"
+                    class="w-full p-3 rounded-lg focus:outline-none focus:ring-2" 
+                    style="border: 1px solid #1B4900; color: #1B4900; background-color: #fffeec;">
+                    <option value="ai-ml">AI/ML & Deep Learning Projects</option>
+                    <option value="web">Web-Based Projects</option>
+                    <option value="gui">GUI/CLI Projects</option>
+                    <option value="app">App-Based Projects</option>
+                </select>
+            </div>
+
+            <!-- AI/ML Projects -->
+             <div class="hidden md:flex category-tabs">
+                <button class="category-btn active" data-category="ai-ml">
+                    AI/ML Projects
+                </button>
+                <button class="category-btn" data-category="web">
+                    Web Projects
+                </button>
+                <button class="category-btn" data-category="gui">
+                    GUI/CLI Projects
+                </button>
+                <button class="category-btn" data-category="app">
+                    App Projects
+                </button>
+            </div>
+            <div id="ai-ml-projects" class="mb-16 category-section">
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-xl md:text-2xl font-semibold" style="color: #1B4900;">AI/ML & Deep Learning Projects</h3>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-brain text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">MediaMorph AI</h4>
+                        <p class="mb-4" style="color: #1B4900;">Generative AI for image generation using GANs.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Django</span><span class="tech-badge">OpenAI</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-lightbulb text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Inspyr AI</h4>
+                        <p class="mb-4" style="color: #1B4900;">Generative AI for content creation with advanced NLP.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Django</span><span class="tech-badge">OpenAI</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-eye text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Voice Enabled Object Recognition</h4>
+                        <p class="mb-4" style="color: #1B4900;">Object recognition through image processing and voice commands.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">OpenCV</span><span class="tech-badge">SpeechRecognition</span>
+                        </div>
+                    </div>
+                    <!-- Show more button for mobile -->
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center mt-4 md:hidden">
+                        <button
+                            class="show-more-btn px-6 py-2 rounded-full transition duration-300"
+                            style="background-color: #fffeec; color: #1B4900; border: 1px solid #1B4900;">
+                            Show More <i class="fas fa-chevron-down ml-2"></i>
+                        </button>
+                    </div>
+                    <!-- Additional cards that will be hidden initially on mobile -->
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-shield-alt text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Image Deepfake Detection</h4>
+                        <p class="mb-4" style="color: #1B4900;">Detect fake images using deep learning models.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Deep Learning</span><span class="tech-badge">Python</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-video text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Video Deepfake Detection</h4>
+                        <p class="mb-4" style="color: #1B4900;">Detect fake videos using advanced neural networks.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Deep Learning</span><span class="tech-badge">Python</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-exclamation-triangle text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Violence Detection</h4>
+                        <p class="mb-4" style="color: #1B4900;">Real-time violence detection in video streams.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Computer Vision</span><span class="tech-badge">ML</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-mouse-pointer text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">AI Virtual Mouse</h4>
+                        <p class="mb-4" style="color: #1B4900;">Control your computer with hand gestures using AI.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">OpenCV</span><span class="tech-badge">Python</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-comments text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">AI Interview System</h4>
+                        <p class="mb-4" style="color: #1B4900;">Automated interview system powered by AI for candidate evaluation.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">NLP</span><span class="tech-badge">Python</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-seedling text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Fertilizer Recommendation System</h4>
+                        <p class="mb-4" style="color: #1B4900;">AI-powered system for recommending optimal fertilizers.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">ML</span><span class="tech-badge">Python</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-prescription-bottle-alt text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Doctor Prescription Analyzer</h4>
+                        <p class="mb-4" style="color: #1B4900;">Analyze and digitize doctor prescriptions using AI and ML.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">OCR</span><span class="tech-badge">ML</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-user-md text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Health Bot</h4>
+                        <p class="mb-4" style="color: #1B4900;">AI chatbot for health-related queries and advice.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">AI</span><span class="tech-badge">Python</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-recycle text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">E-Waste Segregation</h4>
+                        <p class="mb-4" style="color: #1B4900;">AI-based system for e-waste segregation and management.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">AI</span><span class="tech-badge">Python</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-tint text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Data Driven Water Quality Analysis</h4>
+                        <p class="mb-4" style="color: #1B4900;">Analyze water quality using data-driven AI models.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Deep Learning</span><span class="tech-badge">Python</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Web Projects -->
+            <div id="web-projects" class="mb-16 category-section hidden">
+                <h3 class="text-xl md:text-2xl font-semibold mb-8" style="color: #1B4900;">Web-Based Projects</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-box text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Inventory Management System</h4>
+                        <p class="mb-4" style="color: #1B4900;">Track and manage inventory with analytics and reporting.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">MySQL</span><span class="tech-badge">Django</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-hospital text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Hospital Management System</h4>
+                        <p class="mb-4" style="color: #1B4900;">Comprehensive management for hospitals and clinics.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Java</span><span class="tech-badge">Spring Boot</span>
+                        </div>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-book text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Online Book Store Management</h4>
+                        <p class="mb-4" style="color: #1B4900;">Manage and sell books online with e-commerce features.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Django</span><span class="tech-badge">MySQL</span>
+                        </div>
+                    </div>                    <!-- Show more button for mobile -->
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center mt-4 md:hidden">
+                        <button
+                            class="show-more-btn px-6 py-2 rounded-full transition duration-300"
+                            style="background-color: #fffeec; color: #1B4900; border: 1px solid #1B4900;">
+                            Show More <i class="fas fa-chevron-down ml-2"></i>
+                        </button>
+                    </div>
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-file-pdf text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">PDF Merger</h4>
+                        <p class="mb-4" style="color: #1B4900;">Merge multiple PDF files into one with ease.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Flask</span><span class="tech-badge">Web</span>
+                        </div>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-wallet text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Expense Manager</h4>
+                        <p class="mb-4" style="color: #1B4900;">Track and manage your expenses online.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">ReactJS</span><span class="tech-badge">Spring Boot</span>
+                        </div>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-music text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Online Music Store</h4>
+                        <p class="mb-4" style="color: #1B4900;">Buy and stream music online with user-friendly interface.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">ASP.NET</span><span class="tech-badge">SQL Server</span>
+                        </div>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-briefcase text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Job/Recruitment Management System</h4>
+                        <p class="mb-4" style="color: #1B4900;">Manage job postings, applications, and recruitment workflow.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Django</span><span class="tech-badge">MySQL</span>
+                        </div>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-shipping-fast text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Supply Chain Tracking System</h4>
+                        <p class="mb-4" style="color: #1B4900;">Track and manage supply chain logistics and inventory.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Web</span><span class="tech-badge">PHP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>            <!-- GUI/CLI Projects -->
+            <div id="gui-projects" class="mb-16 category-section hidden">
+                <h3 class="text-xl md:text-2xl font-semibold mb-8" style="color: #1B4900;">GUI/CLI Projects</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-user-secret text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Steganography</h4>
+                        <p class="mb-4" style="color: #1B4900;">Hide and extract secret messages in images.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Python</span><span class="tech-badge">CLI</span>
+                        </div>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-robot text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">AI GenZ Chatbot</h4>
+                        <p class="mb-4" style="color: #1B4900;">Modern chatbot with GenZ personality and natural conversation.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">NLP</span><span class="tech-badge">Python</span>
+                        </div>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-language text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Language Translator</h4>
+                        <p class="mb-4" style="color: #1B4900;">Translate text between multiple languages via GUI/CLI.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Python</span><span class="tech-badge">Tkinter</span>
+                        </div>                    </div>
+                    <!-- Show more button for mobile -->
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center mt-4 md:hidden">
+                        <button
+                            class="show-more-btn px-6 py-2 rounded-full transition duration-300"
+                            style="background-color: #fffeec; color: #1B4900; border: 1px solid #1B4900;">
+                            Show More <i class="fas fa-chevron-down ml-2"></i>
+                        </button>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-link text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Blockchain Project</h4>
+                        <p class="mb-4" style="color: #1B4900;">A simple blockchain implementation for learning and demo.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Python</span><span class="tech-badge">CLI</span>
+                        </div>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-microphone text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Voice Attendance System</h4>
+                        <p class="mb-4" style="color: #1B4900;">Mark attendance using voice recognition.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Python</span><span class="tech-badge">SpeechRecognition</span>
+                        </div>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-money-bill-wave text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Fake Currency Detection System</h4>
+                        <p class="mb-4" style="color: #1B4900;">Detect counterfeit currency using image processing.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">OpenCV</span><span class="tech-badge">Python</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- App-Based Projects -->                <div id="app-projects" class="mb-16 category-section hidden">
+                <h3 class="text-xl md:text-2xl font-semibold mb-8" style="color: #1B4900;">App-Based Projects</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-chart-line text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Stock Manager</h4>
+                        <p class="mb-4" style="color: #1B4900;">Manage and track stocks with a user-friendly app.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Android</span><span class="tech-badge">Java</span>
+                        </div>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-file-code text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">HTML Viewer and Editor</h4>
+                        <p class="mb-4" style="color: #1B4900;">View and edit HTML files on your mobile device.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Android</span><span class="tech-badge">Java</span>
+                        </div>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-chess text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">Chess Game</h4>
+                        <p class="mb-4" style="color: #1B4900;">Play chess with friends on your phone.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Android</span><span class="tech-badge">Java</span>
+                        </div>
+                    </div>                    <!-- Show more button for mobile -->
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center mt-4 md:hidden">
+                        <button
+                            class="show-more-btn px-6 py-2 rounded-full transition duration-300"
+                            style="background-color: #fffeec; color: #1B4900; border: 1px solid #1B4900;">
+                            Show More <i class="fas fa-chevron-down ml-2"></i>
+                        </button>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-qrcode text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">QR Code Creator and Scanner</h4>
+                        <p class="mb-4" style="color: #1B4900;">Create and scan QR codes easily with this app.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Android</span><span class="tech-badge">Java</span>
+                        </div>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-sticky-note text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">One Note – Note Taking App</h4>
+                        <p class="mb-4" style="color: #1B4900;">Take notes, organize, and sync across devices.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Android</span><span class="tech-badge">Java</span>
+                        </div>
+                    </div>                    <div class="project-card rounded-lg shadow-md p-6 transition duration-300 more-content hidden md:block"
+                        data-aos="fade-up" style="background-color: #fffeec;">
+                        <i class="fas fa-weight text-4xl mb-4" style="color: #1B4900;"></i>
+                        <h4 class="text-xl font-semibold mb-2" style="color: #1B4900;">BMI Calculator</h4>
+                        <p class="mb-4" style="color: #1B4900;">Calculate your BMI and track your health easily.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-badge">Android</span><span class="tech-badge">Java</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 text-white snap-section" style="background-color: #1B4900;">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-6 drop-shadow-md">Let's Build Something
+                Amazing!</h2>
+            <p class="text-center text-white text-lg mb-12">Ready to transform your ideas into reality? Contact us now!
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Quick Connect Card -->
+                <div
+                    class="p-6 md:p-8 rounded-lg shadow-xl transform hover:scale-105 transition duration-300 border-2"
+                    style="background-color: #143600; border-color: #fffeec;">
+                    <h3 class="text-xl md:text-2xl font-bold mb-6 flex items-center text-white">
+                        <i class="fas fa-phone text-white mr-4" style="color: #fffeec;"></i>
+                        Quick Connect
+                    </h3>
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="p-3 rounded-full" style="background-color: #1B4900;">
+                                <i class="fas fa-phone text-white"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-white">Call/WhatsApp</p>
+                                <p class="text-white">+91 6362635331</p>
+                                <p class="text-white">+91 9880882411</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="p-3 rounded-full" style="background-color: #1B4900;">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-white">Email Us</p>
+                                <a href="mailto:theprojectlabs25@gmail.com"
+                                    class="hover:text-white hover:underline" style="color: #fffeec;">
+                                    theprojectlabs25@gmail.com
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="p-3 rounded-full" style="background-color: #1B4900;">
+                                <i class="fab fa-instagram text-white"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-white">Follow Us</p>
+                                <a href="https://www.instagram.com/the_project_labs/" target="_blank"
+                                    class="hover:text-white hover:underline" style="color: #fffeec;">
+                                    @the_project_labs
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Why Choose Us Card -->
+                <div
+                    class="p-6 md:p-8 rounded-lg shadow-xl transform hover:scale-105 transition duration-300 border-2"
+                    style="background-color: #143600; border-color: #fffeec;">
+                    <h3 class="text-xl md:text-2xl font-bold mb-6 flex items-center text-white">
+                        <i class="fas fa-star mr-4" style="color: #fffeec;"></i>
+                        Why Choose Us?
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-3 text-lg" style="color: #fffeec;"></i>
+                            <div>
+                                <p class="font-bold text-white">24/7 Support</p>
+                                <p class="text-white">Round-the-clock assistance for all your needs</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-3 text-lg" style="color: #fffeec;"></i>
+                            <div>
+                                <p class="font-bold text-white">Affordable Pricing</p>
+                                <p class="text-white">Student-friendly rates with flexible payment options</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-3 text-lg" style="color: #fffeec;"></i>
+                            <div>
+                                <p class="font-bold text-white">Quality Assurance</p>
+                                <p class="text-white">Thoroughly tested and industry-standard code</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="https://api.whatsapp.com/send?phone=916362635331"
+                    class="inline-flex items-center text-white px-8 py-3 rounded-full font-bold transition duration-300 transform hover:scale-105 shadow-lg mb-4 md:mb-0 md:mr-4" 
+                    style="background-color: #348506;">
+                    <i class="fab fa-whatsapp mr-2 text-xl"></i>
+                    WhatsApp Now
+                </a>
+                <a href="mailto:theprojectlabs25@gmail.com"
+                    class="inline-flex items-center px-8 py-3 rounded-full font-bold transition duration-300 transform hover:scale-105 shadow-lg mb-4 md:mb-0 md:mr-4" 
+                    style="background-color: #fffeec; color: #1B4900;">
+                    <i class="fas fa-envelope mr-2"></i>
+                    Email Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Services Section -->
+<section class="py-16 snap-section" style="background-color: #ffffee;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-6 drop-shadow-md"
+            data-aos="fade-up" style="color: #1B4900;">Our Flexible Services</h2>
+        <p class="text-center mb-12 max-w-2xl mx-auto" data-aos="fade-up" style="color: #1B4900;">
+            Beyond our catalog, we offer personalized options to meet your specific needs
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Custom Projects Card -->
+            <div class="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+                data-aos="fade-up" style="background-color: #fffeec; border: 1px solid #1B4900;">
+                <div class="p-6">
+                    <div class="flex justify-center mb-4">
+                        <div class="p-3 rounded-full" style="background-color: #fffeec;">
+                            <i class="fas fa-code text-3xl" style="color: #1B4900;"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3" style="color: #1B4900;">Custom Projects Available On Demand</h3>
+                    <p class="text-center" style="color: #1B4900;">
+                        From cutting-edge AI to intuitive apps – we also build tailored projects based on your requirements.
+                    </p>
+                    <div class="mt-6 flex justify-center">
+                        <a href="#contact"
+                            class="inline-block px-6 py-2 text-white rounded-md transition-colors duration-300" style="background-color: #1B4900;">
+                            Discuss Your Idea</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Run Existing Projects Card -->
+            <div class="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+                data-aos="fade-up" data-aos-delay="100" style="background-color: #fffeec; border: 1px solid #1B4900;">
+                <div class="p-6">
+                    <div class="flex justify-center mb-4">
+                        <div class="p-3 rounded-full" style="background-color: #fffeec;">
+                            <i class="fas fa-laptop-code text-3xl" style="color: #1B4900;"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3" style="color: #1B4900;">Run Existing Projects at Low Cost</h3>
+                    <p class="text-center" style="color: #1B4900;">
+                        Already have a project? We also run and demonstrate existing projects on an hourly basis – making it super affordable for you!
+                    </p>
+                    <div class="mt-6 flex justify-center">
+                        <a href="#contact"
+                            class="inline-block px-6 py-2 text-white rounded-md transition-colors duration-300" style="background-color: #1B4900;">
+                            Get a Quote</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <!-- Testimonials Section -->
+    <section class="py-16 snap-section" style="background-color: #ffffee;">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-6 drop-shadow-md"
+                data-aos="fade-up" style="color: #1B4900;">What Our
+                Clients Say</h2>
+            <p class="text-center mb-12 max-w-2xl mx-auto" data-aos="fade-up" style="color: #1B4900;">Hear from students and
+                professionals who trusted us with their projects.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="border-2 rounded-lg p-6 relative shadow-lg transform transition-transform duration-300 hover:scale-105"
+                    data-aos="fade-up" style="background-color: #fffeec; border-color: #1B4900;">
+                    <div class="text-5xl absolute -top-4 left-4 opacity-20" style="color: #1B4900;">❝</div>
+                    <p class="mb-6 italic relative z-10" style="color: #1B4900;">The quality of code I received was exceptional.
+                        The team guided me through every aspect of my AI project and made sure I understood everything
+                        before submission.</p>
+                    <div class="flex items-center">
+                        <div
+                            class="h-12 w-12 rounded-full flex items-center justify-center text-white font-bold text-xl" style="background-color: #1B4900;">
+                            RR
+                        </div>
+                        <div class="ml-4">
+                            <p class="font-semibold" style="color: #1B4900;">Rahul R</p>
+                            <p class="text-sm" style="color: #1B4900;">Computer Science Student</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="border-2 rounded-lg p-6 relative shadow-lg transform transition-transform duration-300 hover:scale-105"
+                    data-aos="fade-up" data-aos-delay="100" style="background-color: #fffeec; border-color: #1B4900;">
+                    <div class="text-5xl absolute -top-4 left-4 opacity-20" style="color: #1B4900;">❝</div>
+                    <p class="mb-6 italic relative z-10" style="color: #1B4900;">I needed a AI interview system for my
+                        final year project. The team delivered a professional solution with all the necessary features
+                        within my budget.</p>
+                    <div class="flex items-center">
+                        <div
+                            class="h-12 w-12 rounded-full flex items-center justify-center text-white font-bold text-xl" style="background-color: #1B4900;">
+                            HB
+                        </div>
+                        <div class="ml-4">
+                            <p class="font-semibold" style="color: #1B4900;">Hamsa B C</p>
+                            <p class="text-sm" style="color: #1B4900;">Information Science Student</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="border-2 rounded-lg p-6 relative shadow-lg transform transition-transform duration-300 hover:scale-105"
+                    data-aos="fade-up" data-aos-delay="200" style="background-color: #fffeec; border-color: #1B4900;">
+                    <div class="text-5xl absolute -top-4 left-4 opacity-20" style="color: #1B4900;">❝</div>
+                    <p class="mb-6 italic relative z-10" style="color: #1B4900;">Their 24/7 support was incredible. Even after
+                        project delivery, they helped me make modifications and answered all my queries during my final
+                        presentation.</p>
+                    <div class="flex items-center">
+                        <div
+                            class="h-12 w-12 rounded-full flex items-center justify-center text-white font-bold text-xl" style="background-color: #1B4900;">
+                            NI
+                        </div>
+                        <div class="ml-4">
+                            <p class="font-semibold" style="color: #1B4900;">Naga Ishita P B</p>
+                            <p class="text-sm" style="color: #1B4900;">Computer Science Student</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FAQ Section -->
+    <section class="py-16 snap-section" style="background-color: #ffffee;">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-6 drop-shadow-md"
+                data-aos="fade-up" style="color: #1B4900;">Frequently
+                Asked Questions</h2>
+            <p class="text-center mb-12 max-w-2xl mx-auto" data-aos="fade-up" style="color: #1B4900;">Have questions? We have
+                answers!</p>
+
+            <div class="space-y-4" data-aos="fade-up">
+                <!-- FAQ Item 1 -->
+                <div
+                    class="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" 
+                    style="background-color: #fffeec; border: 1px solid #1B4900;">
+                    <button
+                        class="faq-btn w-full flex justify-between items-center p-4 text-left font-semibold focus:outline-none" 
+                        style="color: #1B4900;">
+                        <span>How do I get started?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300" style="color: #1B4900;"></i>
+                    </button>
+                    <div class="faq-content hidden p-4 pt-0" style="color: #1B4900;">
+                        <p>Getting started is easy! Simply contact us through WhatsApp or email Tell us about your project requirements, and our team will get back to you
+                            within 2 hours to discuss the next steps.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div
+                    class="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" 
+                    style="background-color: #fffeec; border: 1px solid #1B4900;">
+                    <button
+                        class="faq-btn w-full flex justify-between items-center p-4 text-left font-semibold focus:outline-none" 
+                        style="color: #1B4900;">
+                        <span>What payment methods do you accept?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300" style="color: #1B4900;"></i>
+                    </button>
+                    <div class="faq-content hidden p-4 pt-0" style="color: #1B4900;">
+                        <p>We accept multiple payment methods including UPI, bank transfer, and Google Pay. For our
+                            international clients, we also accept PayPal. We typically require a 50% advance payment,
+                            with the remaining 50% due upon project completion.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div
+                    class="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" 
+                    style="background-color: #fffeec; border: 1px solid #1B4900;">
+                    <button
+                        class="faq-btn w-full flex justify-between items-center p-4 text-left font-semibold focus:outline-none" 
+                        style="color: #1B4900;">
+                        <span>Do you provide source code?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300" style="color: #1B4900;"></i>
+                    </button>
+                    <div class="faq-content hidden p-4 pt-0" style="color: #1B4900;">
+                        <p>Yes, all our packages include complete source code. We believe in transparency and helping
+                            you understand the project. We also provide documentation and support to help you understand
+                            how the code works.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div
+                    class="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" 
+                    style="background-color: #fffeec; border: 1px solid #1B4900;">
+                    <button
+                        class="faq-btn w-full flex justify-between items-center p-4 text-left font-semibold focus:outline-none" 
+                        style="color: #1B4900;">
+                        <span>What's your turnaround time?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300" style="color: #1B4900;"></i>
+                    </button>
+                    <div class="faq-content hidden p-4 pt-0" style="color: #1B4900;">
+                        <p>Our turnaround time depends on the complexity of the project. Simple projects can be
+                            delivered within 1-2 days, while more complex ones may take 3-5 days. We always discuss the
+                            timeline before starting and stick to agreed deadlines.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div
+                    class="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" 
+                    style="background-color: #fffeec; border: 1px solid #1B4900;">
+                    <button
+                        class="faq-btn w-full flex justify-between items-center p-4 text-left font-semibold focus:outline-none" 
+                        style="color: #1B4900;">
+                        <span>Do you offer custom projects?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300" style="color: #1B4900;"></i>
+                    </button>
+                    <div class="faq-content hidden p-4 pt-0" style="color: #1B4900;">
+                        <p>Absolutely! While we have a catalog of ready-made projects, we specialize in creating custom
+                            solutions tailored to your specific requirements. Our team can develop unique projects from
+                            scratch based on your ideas and specifications.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 text-white" style="background-color: #1B4900;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <img src="Logo.png" alt="The Project Labs Logo" class="h-8">
+                        <span class="ml-2 text-xl font-bold">The Project Labs</span>
+                    </div>
+                    <p class="mb-4" style="color: #fffeec;">Turning ideas into reality through innovative technology solutions.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.instagram.com/the_project_labs/" target="_blank"
+                            class="hover:text-white transition-colors duration-300" style="color: #fffeec;">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="mailto:theprojectlabs25@gmail.com"
+                            class="hover:text-white transition-colors duration-300" style="color: #fffeec;">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </a>
+                        <a href="https://api.whatsapp.com/send?phone=916362635331"
+                            class="hover:text-white transition-colors duration-300" style="color: #fffeec;">
+                            <i class="fab fa-whatsapp text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-white">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home"
+                                class="hover:text-white transition-colors duration-300" style="color: #fffeec;">Home</a></li>
+                        <li><a href="#projects"
+                                class="hover:text-white transition-colors duration-300" style="color: #fffeec;">Projects</a></li>
+                        <li><a href="#contact"
+                                class="hover:text-white transition-colors duration-300" style="color: #fffeec;">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-white">Project Categories</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#ai-ml-projects"
+                                class="hover:text-white transition-colors duration-300" style="color: #fffeec;">AI/ML
+                                Projects</a></li>
+                        <li><a href="#web-projects"
+                                class="hover:text-white transition-colors duration-300" style="color: #fffeec;">Web-Based
+                                Projects</a></li>
+                        <li><a href="#gui-projects"
+                                class="hover:text-white transition-colors duration-300" style="color: #fffeec;">GUI/CLI
+                                Projects</a></li>
+                        <li><a href="#app-projects"
+                                class="hover:text-white transition-colors duration-300" style="color: #fffeec;">App-Based
+                                Projects</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-white">Contact Info</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-2" style="color: #fffeec;"></i>
+                            <span>+91 6362635331 / 9880882411</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2" style="color: #fffeec;"></i>
+                            <span>theprojectlabs25@gmail.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2" style="color: #fffeec;"></i>
+                            <span>Bangalore, India</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 text-center" style="border-top: 1px solid #143600; color: #fffeec;">
+                <p>&copy; 2025 The Project Labs. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize AOS (Animate on Scroll)
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({
+                duration: 800,
+                once: true,
+            });
+
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Category tabs for projects
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const categorySections = document.querySelectorAll('.category-section');
+            const categorySelect = document.getElementById('category-select');
+
+            function showCategory(category) {
+                categorySections.forEach(section => {
+                    section.classList.add('hidden');
+                });
+                document.getElementById(`${category}-projects`).classList.remove('hidden');
+
+                categoryButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.style.backgroundColor = '#fffeec';
+                    btn.style.color = '#4b5563';
+                });
+
+                const activeButton = document.querySelector(`[data-category="${category}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                    activeButton.style.backgroundColor = '#1B4900';
+                    activeButton.style.color = 'white';
+                }
+            }
+
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const category = button.getAttribute('data-category');
+                    showCategory(category);
+                });
+            });
+
+            if (categorySelect) {
+                categorySelect.addEventListener('change', () => {
+                    showCategory(categorySelect.value);
+                });
+            }
+
+            // Show More functionality for mobile
+            const showMoreButtons = document.querySelectorAll('.show-more-btn');
+
+            showMoreButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const section = this.closest('.category-section');
+                    const hiddenContent = section.querySelectorAll('.more-content');
+
+                    hiddenContent.forEach(content => {
+                        content.classList.toggle('hidden');
+                        content.classList.toggle('md:block');
+                    });
+
+                    if (this.innerHTML.includes('Show More')) {
+                        this.innerHTML = 'Show Less <i class="fas fa-chevron-up ml-2"></i>';
+                    } else {
+                        this.innerHTML = 'Show More <i class="fas fa-chevron-down ml-2"></i>';
+                    }
+                });
+            });
+
+            // FAQ accordion
+            const faqButtons = document.querySelectorAll('.faq-btn');
+
+            faqButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('i');
+
+                    content.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-180');
+                });
+            });
+
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                    }
+
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
